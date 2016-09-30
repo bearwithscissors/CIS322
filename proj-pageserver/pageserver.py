@@ -72,7 +72,7 @@ STATUS_NOT_IMPLEMENTED = "HTTP/1.0 401 Not Implemented\n\n"
 def respond(sock):
     """
     This server responds only to GET requests (not PUT, POST, or UPDATE).
-    Any valid GET request is answered with an ascii graphic of a cat. 
+    Any valid GET request is answered with an ascii graphic of a cat.
     """
     sent = 0
     request = sock.recv(1024)  # We accept only short requests
@@ -80,7 +80,14 @@ def respond(sock):
     print("\nRequest was {}\n".format(request))
 
     parts = request.split()
-    if "~" in parts[1] or "//" in parts[1] or ".." in parts[1]:
+
+    reject = True
+    if ".html" not in parts[1] and ".css" in parts[1]:
+        reject = False
+    elif ".css" not in parts[1] and ".html" in parts[1]:
+        reject = False
+        
+    if "~" in parts[1] or "//" in parts[1] or ".." in parts[1] or reject == True:
         transmit(STATUS_FORBIDDEN, sock)
         transmit("<h1>403 FORBIDDEN</h1>", sock)
         sock.close()
@@ -96,9 +103,16 @@ def respond(sock):
             transmit("<h1>404 NOT FOUND</h1>", sock)
     else:
         transmit(STATUS_FORBIDDEN, sock)
-        transmit("\nI don't handle this request: {}\n 403 FORBIDDEN".format(request), sock)
+        transmit("<h1>403 FORBIDDEN</h1>", sock)
     sock.close()
     return
+
+def transmit(msg, sock):
+    """It might take several sends to get the whole message out"""
+    sent = 0
+    while sent < len(msg):
+        buff = bytes( msg[sent: ], encoding="utf-8")
+        sent += sock.send( buff )
 
 def transmit(msg, sock):
     """It might take several sends to get the whole message out"""
