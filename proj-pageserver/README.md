@@ -22,13 +22,13 @@ A "getting started" project for CIS 322, software engineering 1 at University of
   number above 1000 (rather than port 80 that a privileged web server would use)
 
   ### Author: Wyatt Reed, wyattr@uoregon.edu ###
-
-  ** git clone <yourGitRepository> <targetDirectory>
-  ** cd <targetDirectory>
-  ** make configure
-  ** make run 
-  ** (control-C to stop program)
-
+```
+git clone <yourGitRepository> <targetDirectory>
+cd <targetDirectory>
+make configure
+make run 
+(control-C to stop program)
+```
 ### Who do I talk to? ###
 
 * Maintained by Michal Young, michal@cs.uoregon.edu
