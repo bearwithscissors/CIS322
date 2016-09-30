@@ -84,9 +84,9 @@ def respond(sock):
     print("\nRequest was {}\n".format(request))
 
     parts = request.split()
-    if "/pages/" not in parts[1]:
+    if "~" in parts[1] or "//" in parts[1] or ".." in parts[1]:
         transmit(STATUS_FORBIDDEN, sock)
-        transmit("<h1>403 FORBIDDEN</h1>".format(request), sock)
+        transmit("<h1>403 FORBIDDEN</h1>", sock)
         sock.close()
         return
     elif len(parts) > 1 and parts[0] == "GET":
